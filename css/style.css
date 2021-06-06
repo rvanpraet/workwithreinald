@@ -4,7 +4,8 @@ html {
 }
 
 body {
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
+  background-color: #13242b !important;
 }
 
 .font-size-10 {
@@ -2404,6 +2405,9 @@ h5,
   color: #444649;
   padding-bottom: 10px;
   font-weight: 900 !important;
+  -webkit-transition: 0.3s color ease;
+  -o-transition: 0.3s color ease;
+  transition: 0.3s color ease;
 }
 .feature-92912 .wrap-icon {
   color: rgba(59, 78, 218, 0.2);
@@ -2421,11 +2425,24 @@ h5,
 .feature-92912 p {
   line-height: 1.3;
 }
+
 .feature-92912:hover,
 .feature-92912.active {
   border: 2px solid #00a1a7;
   background-color: transparent;
+  color: #f2f2f2 !important;
 }
+
+.feature-92912:hover .heading,
+.feature-92912.active .heading {
+  color: #f2f2f2 !important;
+}
+
+.feature-92912:hover .more-92913,
+.feature-92912.active .more-92913 {
+  color: #f2f2f2 !important;
+}
+
 .feature-92912:hover .wrap-icon,
 .feature-92912.active .wrap-icon {
   -webkit-transform: translate(10%, -50%);
@@ -2813,13 +2830,13 @@ textarea {
 }
 
 .diamond-shape {
+  background-color: #13242b;
   border-top: 2px solid #ffffff;
   border-right: 2px solid #ffffff;
   border-bottom: 2px solid #fffbf0;
   border-left: 2px solid #fffbf0;
   display: flex;
   height: 200px;
-  cursor: pointer;
   position: relative;
   text-align: center;
   transform: rotate(45deg);

@@ -1,5 +1,5 @@
 // Array of vectors
-let vectors = new Array(50);
+let vectors = new Array(20);
 let canvas;
 let bodyHeight = document.body.scrollHeight;
 let attractor;
@@ -7,8 +7,7 @@ let backgroundColor = "#13242b";
 let moverColor = 255;
 
 function setup() {
-  let w = windowWidth;
-  canvas = createCanvas(w, bodyHeight);
+  canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0);
   canvas.style("z-index", -1);
 
@@ -48,7 +47,7 @@ function draw() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, bodyHeight);
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 // Because holding mousepress attracts moving objects, on mouse release we want to push them away with a big force, but only the ones who are in range
