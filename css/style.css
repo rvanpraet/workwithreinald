@@ -3,6 +3,10 @@ html {
   overflow-x: hidden;
 }
 
+body {
+  background-color: transparent !important;
+}
+
 .font-size-10 {
   font-size: 10px;
 }
@@ -603,7 +607,7 @@ h5,
 
 /* Navbar */
 .site-navbar {
-  background-color: #444649;
+  background-color: transparent;
   border-bottom: 1px solid #04c2c9;
   margin-bottom: 0px;
   z-index: 1999;
@@ -1074,7 +1078,7 @@ h5,
 .bg-tertiary {
   /* background: #fffef8; */
   /* background: #fffbf0; */
-  background: #fffbf0;
+  background: transparent !important;
   /* z-index: -2; */
 }
 
@@ -1094,7 +1098,7 @@ h5,
   height: 100%;
   content: "";
   right: 0;
-  background-color: #fffbf0;
+  background-color: transparent !important;
 }
 .site-section-cover,
 .site-section-cover .container {
@@ -2367,7 +2371,7 @@ h5,
   content: "";
   left: 0;
   top: 0;
-  background-color: #fffbf0;
+  background-color: transparent;
 }
 
 .media-29101 img {
@@ -2490,11 +2494,11 @@ h5,
 
 /* Text */
 .text-primary {
-  color: #444649 !important;
+  color: #f2f2f2 !important;
 }
 
 .text-secondary {
-  color: #616161 !important;
+  color: #f2f2f2 !important;
 }
 
 a:hover {
@@ -2710,28 +2714,31 @@ textarea {
 /* Button */
 
 .button {
+  align-items: center;
   background-color: white;
   border: 2px solid #fffbf0;
   border-radius: 4px;
   box-sizing: inherit;
   color: #e31b6d;
   cursor: pointer;
-  display: inline-block;
-  font-size: 20px;
-  font-weight: bolder;
-  padding: 12px 40px 12px 15px;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
   -webkit-transition: all 0.35s;
   -o-transition: all 0.35s;
   transition: all 0.35s;
+  text-transform: uppercase;
 }
 
 .button-arrow {
   color: #e31b6d;
   font-size: 14px;
   font-weight: 100;
-  position: absolute;
-  right: 15px;
-  top: 17.5px;
+  margin-left: 16px;
+  /* position: absolute; */
+  /* right: 15px;
+  top: 17.5px; */
   -webkit-transition: all 0.35s;
   -o-transition: all 0.35s;
   transition: all 0.35s;
@@ -2763,8 +2770,8 @@ textarea {
 
 @media screen and (max-width: 991.98px) {
   .button {
-    font-size: 18px;
-    padding: 12px 50px 12px 20px;
+    font-size: 14px;
+    /* padding: 12px 50px 12px 20px; */
   }
 
   .button-arrow {
@@ -2774,7 +2781,7 @@ textarea {
 
 @media screen and (max-width: 575.98px) {
   .button {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   .button-arrow {
@@ -2787,7 +2794,7 @@ textarea {
 }
 
 .credits-wrap {
-  background-color: #444649;
+  background-color: transparent;
   padding: 1.5em 0 !important;
 }
 
@@ -3038,7 +3045,7 @@ a span.empty {
   position: absolute;
   top: 50%;
   left: 50%;
-  background: #0e182d;
+  background: #f2f2f2;
   width: 0;
   height: 1.2em;
   -ms-transform: translate(-50%, -55%);

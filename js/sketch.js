@@ -3,6 +3,8 @@ let vectors = new Array(50);
 let canvas;
 let bodyHeight = document.body.scrollHeight;
 let attractor;
+let backgroundColor = "#13242b";
+let moverColor = 255;
 
 function setup() {
   let w = windowWidth;
@@ -21,8 +23,8 @@ function setup() {
 }
 
 function draw() {
-  clear();
-  background(255, 10);
+  //   clear();
+  background(backgroundColor);
   let angle;
   let xOff = 0;
   let yOff = 0;
@@ -49,13 +51,18 @@ function windowResized() {
   resizeCanvas(windowWidth, bodyHeight);
 }
 
+// Because holding mousepress attracts moving objects, on mouse release we want to push them away with a big force, but only the ones who are in range
 function mouseReleased() {
+  // Iterate movers
   for (let i = 0; i < vectors.length; i++) {
     let mover = vectors[i];
+    // Update current attractor position
     attractor.update(mouseX, mouseY);
+    // Condition distance
     if (
       dist(attractor.pos.x, attractor.pos.y, mover.pos.x, mover.pos.y) < 225
     ) {
+      // push away
       calculateAtrraction(attractor, mover, pow(10, 25), -1);
     }
   }
@@ -93,14 +100,14 @@ class Mover {
   show(connectors) {
     // Outer ellipse
     noStroke();
-    fill(0, 30);
+    fill(255, 80);
     push();
     ellipse(this.pos.x, this.pos.y, this.r + 2);
     pop();
 
     // Inner ellipse
     noStroke();
-    fill(0, 80);
+    fill(255, 255);
     push();
     ellipse(this.pos.x, this.pos.y, this.r);
     pop();
@@ -134,7 +141,7 @@ class Mover {
     let d = dist(x1, y1, x2, y2);
     if (d < 225) {
       let alpha = log(225 / d) * alphaMult;
-      stroke(0, alpha);
+      stroke(255, alpha);
       strokeWeight(1);
       line(x1, y1, x2, y2);
     }
@@ -157,7 +164,7 @@ class Mover {
 }
 
 class Attractor {
-  constructor(x, y, m = 4) {
+  constructor(x, y, m = 8) {
     this.pos = createVector(x, y);
     this.mass = m;
     this.r = sqrt(this.mass) * 2;
@@ -169,7 +176,7 @@ class Attractor {
   }
 
   attract(mover) {
-    let G = 0.5;
+    let G = 2;
     let distance = dist(this.pos.x, this.pos.y, mover.pos.x, mover.pos.y);
     if (mouseIsPressed & (distance < 450)) {
       G = 200;
