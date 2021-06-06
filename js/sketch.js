@@ -1,5 +1,5 @@
 // Array of vectors
-let vectors = new Array(100);
+let vectors = new Array(50);
 let canvas;
 let bodyHeight = document.body.scrollHeight;
 let attractor;
@@ -10,6 +10,10 @@ function setup() {
   canvas.position(0, 0);
   canvas.style("z-index", -1);
 
+  // Init attracktor on mouse position
+  attractor = new Attractor(mouseX, mouseY);
+
+  // Init movers
   for (let i = 0; i < vectors.length; i++) {
     let v = new Mover(random(width), random(height), random(1, 2));
     vectors[i] = v;
@@ -24,18 +28,16 @@ function draw() {
   let yOff = 0;
   for (let i = 0; i < vectors.length; i++) {
     let mover = vectors[i];
-    attractor = new Attractor(mouseX, mouseY);
-    // randomVal = random(0, 600)
-    // if (mover.pos.x % 17 === 0) {
-    //   angle =
-    //     sin(noise((i / mover.pos.x) * xOff, (mover.pos.y / i) * yOff)) /
-    //     random(50, 100);
-    //   mover.direct(angle);
-    // }
+
+    // Update attractor position
+    attractor.update(mouseX, mouseY);
+
+    // Update movers
     mover.update();
     mover.edges();
     mover.show(vectors);
 
+    // Attract movers in the area
     attractor.attract(mover);
 
     xOff += 0.01;
@@ -47,7 +49,17 @@ function windowResized() {
   resizeCanvas(windowWidth, bodyHeight);
 }
 
-function mouseClicked() {}
+function mouseReleased() {
+  for (let i = 0; i < vectors.length; i++) {
+    let mover = vectors[i];
+    attractor.update(mouseX, mouseY);
+    if (
+      dist(attractor.pos.x, attractor.pos.y, mover.pos.x, mover.pos.y) < 225
+    ) {
+      calculateAtrraction(attractor, mover, pow(10, 25), -1);
+    }
+  }
+}
 
 class Mover {
   constructor(x, y, m = 4) {
@@ -56,7 +68,7 @@ class Mover {
     this.vel.mult(random(5));
     this.acc = createVector(0, 0);
     this.angle = 0;
-    this.maxspeed = 0.3;
+    this.maxspeed = 1;
     this.mass = m;
     this.r = sqrt(this.mass) * 2;
   }
@@ -72,7 +84,6 @@ class Mover {
   }
 
   update() {
-    // this.acc.setMag(0.001);
     this.vel.add(this.acc);
     this.vel.limit(this.maxspeed);
     this.pos.add(this.vel);
@@ -80,7 +91,6 @@ class Mover {
   }
 
   show(connectors) {
-    this.isConnected(connectors);
     // Outer ellipse
     noStroke();
     fill(0, 30);
@@ -94,12 +104,15 @@ class Mover {
     push();
     ellipse(this.pos.x, this.pos.y, this.r);
     pop();
+
+    this.interact(connectors);
   }
 
-  isConnected(neighbours) {
+  interact(neighbours) {
     //Draw lines between particles
     for (let j = 0; j < neighbours.length; j++) {
       let neighbour = neighbours[j];
+      calculateAtrraction(this, neighbour, 5, sin(TWO_PI));
       this.connect(
         this.pos.x,
         this.pos.y,
@@ -119,8 +132,8 @@ class Mover {
       alphaMult = alphaMult / 3;
     }
     let d = dist(x1, y1, x2, y2);
-    if (d < 250) {
-      let alpha = log(150 / d) * alphaMult;
+    if (d < 225) {
+      let alpha = log(225 / d) * alphaMult;
       stroke(0, alpha);
       strokeWeight(1);
       line(x1, y1, x2, y2);
@@ -150,19 +163,34 @@ class Attractor {
     this.r = sqrt(this.mass) * 2;
   }
 
-  attract(mover) {
-    // To apply force
-    let force = p5.Vector.sub(this.pos, mover.pos);
-    let distanceSq = constrain(force.magSq(), 100, 2500);
-
-    // "Universal" gravitational force
-    let G = 0.5;
-
-    // Calculated strength F = (m1 * m2) * G / r²
-    let strength = (G * (this.mass * mover.mass)) / distanceSq;
-
-    force.setMag(strength);
-
-    mover.applyForce(force);
+  update(x, y) {
+    this.pos.x = x;
+    this.pos.y = y;
   }
+
+  attract(mover) {
+    let G = 0.5;
+    let distance = dist(this.pos.x, this.pos.y, mover.pos.x, mover.pos.y);
+    if (mouseIsPressed & (distance < 450)) {
+      G = 200;
+    }
+    calculateAtrraction(this, mover, G, 1);
+  }
+}
+
+function calculateAtrraction(attractor, mover, G, mod = 1) {
+  // To apply force
+  let force = p5.Vector.sub(attractor.pos, mover.pos);
+  let distanceSq = constrain(force.magSq(), pow(50, 2), pow(225, 2));
+
+  // "Universal" gravitational force
+  //   let G = 0.5;
+
+  // Calculated strength F = (m1 * m2) * G / r²
+  let strength = ((G * (attractor.mass * mover.mass)) / distanceSq) * mod;
+  // * sin(TWO_PI);
+
+  force.setMag(strength);
+
+  mover.applyForce(force);
 }
