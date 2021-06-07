@@ -2440,7 +2440,12 @@ h5,
 
 .feature-92912:hover .more-92913,
 .feature-92912.active .more-92913 {
-  color: #f2f2f2 !important;
+  color: #e31b6d !important;
+}
+
+.feature-92912:hover .more-92913 a,
+.feature-92912.active .more-92913 a {
+  color: red !important;
 }
 
 .feature-92912:hover .wrap-icon,
@@ -3112,4 +3117,21 @@ a span.empty {
 /* Splitting JS fix */
 .splitting .word .char {
   display: inline-block;
+}
+
+/* Outta Space styles */
+#outta-space {
+}
+
+/* ng-portofilo fixes, will be removed later */
+.color-secondary {
+  background-color: transparent !important;
+}
+
+.aside {
+  color: #f2f2f2 !important;
+}
+
+.pull-right.year {
+  color: #e31b6d !important;
 }

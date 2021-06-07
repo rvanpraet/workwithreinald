@@ -1,20 +1,30 @@
-// Array of vectors
-let vectors = new Array(20);
+// Canvas settings
 let canvas;
 let bodyHeight = document.body.scrollHeight;
+
+// Players
+let amount = 20;
+let vectors;
 let attractor;
+
+// Colors
 let backgroundColor = "#13242b";
 let moverColor = 255;
 
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
+  canvas.id("outta-space");
+  canvas.parent("outta-space-parent");
   canvas.position(0, 0);
   canvas.style("z-index", -1);
+  canvas.style("display", "block");
 
   // Init attracktor on mouse position
   attractor = new Attractor(mouseX, mouseY);
 
   // Init movers
+  amount = calcAmtOfPlayers(amount);
+  vectors = new Array(amount);
   for (let i = 0; i < vectors.length; i++) {
     let v = new Mover(random(width), random(height), random(1, 2));
     vectors[i] = v;
@@ -22,7 +32,6 @@ function setup() {
 }
 
 function draw() {
-  //   clear();
   background(backgroundColor);
   let angle;
   let xOff = 0;
@@ -46,7 +55,18 @@ function draw() {
   }
 }
 
+function calcAmtOfPlayers(amt) {
+  if (windowWidth < 576) {
+    return amt / 4;
+  }
+  if (windowWidth < 992) {
+    return amt / 2;
+  }
+  return amt;
+}
+
 function windowResized() {
+  //TODO: Amount of movers grows/shrinks when onWindowResize
   resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -84,11 +104,13 @@ class Mover {
     this.applyForce(this.angle);
   }
 
+  /* Apply a vector force to particle */
   applyForce(force) {
     let f = p5.Vector.div(force, this.mass);
     this.vel.add(f);
   }
 
+  /* Update method */
   update() {
     this.vel.add(this.acc);
     this.vel.limit(this.maxspeed);
@@ -96,6 +118,7 @@ class Mover {
     this.acc.mult(0);
   }
 
+  /* Render method */
   show(connectors) {
     // Outer ellipse
     noStroke();
@@ -111,9 +134,14 @@ class Mover {
     ellipse(this.pos.x, this.pos.y, this.r);
     pop();
 
+    /* Interact with other partices*/
     this.interact(connectors);
   }
 
+  /**
+   *
+   * @param {Array} neighbours Accepts an array of pacticles
+   */
   interact(neighbours) {
     //Draw lines between particles
     for (let j = 0; j < neighbours.length; j++) {
@@ -133,9 +161,9 @@ class Mover {
   }
 
   connect(x1, y1, x2, y2, mouse) {
-    let alphaMult = 60;
+    let alphaMult = 90;
     if (!mouse) {
-      alphaMult = alphaMult / 3;
+      alphaMult = alphaMult / 2;
     }
     let d = dist(x1, y1, x2, y2);
     if (d < 225) {
