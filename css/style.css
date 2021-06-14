@@ -8,6 +8,10 @@ body {
   background-color: #13242b !important;
 }
 
+.modal-content {
+  background-color: #13242b !important;
+}
+
 .font-size-10 {
   font-size: 10px;
 }
@@ -2525,6 +2529,11 @@ h5,
 
 a:hover {
   color: #e31b6d;
+}
+
+a.text-primary:focus,
+a.text-primary:hover {
+  color: #e31b6d !important;
 }
 
 .modal-backdrop {
